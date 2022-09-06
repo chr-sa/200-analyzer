@@ -183,6 +183,7 @@ def count_trigrams(keys: JSON, data: JSON, space: str):
         'sfR': 0,
         'unknown': 0,
     }
+    bigrams = dict()
 
     for trigram in data['3-grams']:
         
@@ -205,6 +206,10 @@ def count_trigrams(keys: JSON, data: JSON, space: str):
             ):
                 trigram_data['sfR'] += data['3-grams'][trigram]
             else:
+                # NOTE: here come the strange keys into play. 'sfb' in particular
+                if table[key] == 'sfb':
+                    bigrams[trigram] = data['3-grams'][trigram]
+                # print(table[key])
                 trigram_data[table[key]] += data['3-grams'][trigram]
         else:
             trigram_data['unknown'] += data['3-grams'][trigram]
@@ -226,6 +231,17 @@ def count_trigrams(keys: JSON, data: JSON, space: str):
         trigram_data['oneh-rt'] = trigram_data['oneh-in'] / trigram_data['oneh-out']
     else:
         trigram_data['oneh-rt'] = float('inf')
+
+    # NOTE: This is sorted automatically normally, but we sort for good measure.
+    t = 0
+    for bigram in bigrams:
+        bigrams[bigram] /= total
+        t += bigrams[bigram]
+
+    bigrams = sorted(bigrams.items(), key=lambda x:x[1])
+    bigrams.reverse()
+    trigram_data['sfbs'] = bigrams[:10]
+    trigram_data['sfbs'].append(('total', t))
 
     return trigram_data
 

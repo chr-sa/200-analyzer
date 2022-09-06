@@ -284,6 +284,21 @@ def print_layout(results: JSON, config: JSON):
 
         print()
 
+        print('SFB Counts')
+        print('==========')
+        # NOTE
+        for sfb, percent in item['metrics']['sfbs'][:5]:
+            percent = percent * 100
+            print(f'  {sfb}: {percent:.4f}%', end=' ')
+        print()
+        for sfb, percent in item['metrics']['sfbs'][5:-1]:
+            percent = percent * 100
+            print(f'  {sfb}: {percent:.4f}%', end=' ')
+        print()
+        print(f"  total: {item['metrics']['sfbs'][-1][1]*100:.2f}%")
+
+        print()
+
         # finger use
         print("Finger Use")
         print("==========")
