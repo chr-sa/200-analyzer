@@ -299,6 +299,21 @@ def print_layout(results: JSON, config: JSON):
 
         print()
 
+        print('Redirect Counts')
+        print('===============')
+        # NOTE
+        for redir, percent in item['metrics']['redirects'][:5]:
+            percent = percent * 100
+            print(f'  {redir}: {percent:.4f}%', end=' ')
+        print()
+        for redir, percent in item['metrics']['redirects'][5:-1]:
+            percent = percent * 100
+            print(f'  {redir}: {percent:.4f}%', end=' ')
+        print()
+        print(f"  total: {item['metrics']['redirects'][-1][1]*100:.2f}%")
+
+        print()
+
         # finger use
         print("Finger Use")
         print("==========")

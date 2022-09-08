@@ -184,6 +184,7 @@ def count_trigrams(keys: JSON, data: JSON, space: str):
         'unknown': 0,
     }
     bigrams = dict()
+    redirects = dict()
 
     for trigram in data['3-grams']:
         
@@ -209,6 +210,8 @@ def count_trigrams(keys: JSON, data: JSON, space: str):
                 # NOTE: here come the strange keys into play. 'sfb' in particular
                 if table[key] == 'sfb':
                     bigrams[trigram] = data['3-grams'][trigram]
+                elif table[key] == 'redirect':
+                    redirects[trigram] = data['3-grams'][trigram]
                 # print(table[key])
                 trigram_data[table[key]] += data['3-grams'][trigram]
         else:
@@ -247,6 +250,16 @@ def count_trigrams(keys: JSON, data: JSON, space: str):
     bigrams.reverse()
     trigram_data['sfbs'] = bigrams[:10]
     trigram_data['sfbs'].append(('total', t))
+
+    t = 0
+    for bigram in redirects:
+        redirects[bigram] /= total
+        t += redirects[bigram]
+
+    redirects = sorted(redirects.items(), key=lambda x:x[1])
+    redirects.reverse()
+    trigram_data['redirects'] = redirects[:10]
+    trigram_data['redirects'].append(('total', t))
 
     return trigram_data
 
