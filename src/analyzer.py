@@ -234,6 +234,11 @@ def count_trigrams(keys: JSON, data: JSON, space: str):
 
     # NOTE: This is sorted automatically normally, but we sort for good measure.
     t = 0
+    # for bigram in bigrams:
+    #     t += bigrams[bigram]
+    # for bigram in bigrams:
+    #     bigrams[bigram] /= t
+
     for bigram in bigrams:
         bigrams[bigram] /= total
         t += bigrams[bigram]
